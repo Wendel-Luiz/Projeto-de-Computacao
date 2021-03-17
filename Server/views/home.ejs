@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container">
+        <div class="bemVindo">
+            <h1>Medidor de consumo de água</h1>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
+            <p>Tempo</p>
+        </div>
+        <div class="obrigado">
+            <h2>Criado por Wendel Luiz S. Aragão</h2>
+            <p class="p2">UEPG - Engenharia de Computação - 2020</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var pulsos = []
+        var datas = []
+        var datasPT = []
+        var vazao = []
+
+        async function getDados(){
+            let dados = await fetch('/user/home/dados')
+                .then(res => {
+                    if (res.ok){
+                        return res.json()
+                    }else{
+                        return res.json({Message:'Error'})
+                    }
+                })
+                .then(data => data)
+                .catch(error => console.log(error))
+            
+            
+            dados.forEach((item, index) => {
+                if(pulsos[index] != item['pulsos']){
+                    pulsos.push(item['pulsos'])
+                    vazao.push((item['pulsos']/item['k']))
+                }
+            });
+
+            let aux;
+            dados.forEach((item, index) => {
+                if(datas[index] != (item['data'])){
+                    aux = true
+                    datas.push(item['data'])
+                    datasPT.push(new Date(item['data']))
+                }      
+            });
+            if(aux)
+                myChart.update()
+        }
+
+        getDados()
+        setInterval(getDados, 1000)
+
+        var data = {
+            labels: datasPT,
+            datasets: [{
+                label: "Consumo em Litros",
+                backgroundColor: "rgba(141, 211, 131, 0.25)",
+                borderColor: "rgb(148, 186, 205)",
+                borderWidth: 4,
+                hoverBorderColor: "rgb(0,0,0)",
+                data: vazao,
+            }]
+        };
+
+        var options = {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        display: true
+                    }
+                    
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        display: false,
+                    },
+                }]
+            },
+        };
+        var myChart = new Chart.Line('chart', {
+            options: options,
+            data: data
+        });
+
+    </script>
+</body>
+</html>

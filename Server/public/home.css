@@ -1,0 +1,56 @@
+*{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Work Sans', sans-serif;
+}
+.container{
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    
+    grid-template-columns: 100vw;
+    grid-template-rows: 20vh, 70vh, 10vh;
+    justify-content: center;
+}
+.chart-container{
+    width: 80%;
+    height: 80%;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+    
+}
+.chart-container p{
+    display: inline;
+}
+.bemVindo{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    background: #40a3c4;
+    text-transform: uppercase;
+    box-shadow: 5px 5px 25px;
+}
+.bemVindo h1{
+    align-self: center;
+    margin-top: 25px;
+}
+.obrigado{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    text-align: center;
+    text-transform: uppercase;
+    background: rgb(226, 127, 15);
+    box-shadow: 5px 5px 25px;
+}
+.obrigado h2{
+    margin-top: 25px;
+    text-align: center;
+}
+.obrigado .p2{
+    font-size: 1.2em;
+}
